@@ -11,16 +11,20 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     public function register(Request $request){
-        
+
                 $feilds = $request->validate([
                     'name'=>'required|string',
                     'email' =>'required|string|unique:users,email',
+                    'phoneNo'=>'required|string',
+                    'role' =>'required|string',
                     'password' => 'required|string|confirmed'
                 ]);
 
                 $user = User::create([
                     'name'=> $feilds['name'],
                     'email' => $feilds['email'],
+                    'phoneNo'=>$feilds['phoneNo'],
+                    'role'=>$feilds['role'],
                     'password' => bcrypt($feilds['password'])
                 ]);
 
@@ -33,19 +37,21 @@ class AuthController extends Controller
 
                 return response($response,201);
 
+
+
+    }
+
+    public function getUserAll(){
+        return User::all();
     }
 
     public function logout(Request $request){
-        try {
             auth()->user()->tokens()->delete();
-    
+
             return [
                 'message' => 'Logged out successfully'
             ];
-        } catch (\Exception $e) {
-            // Handle the exception here
-            return response(['message' => 'Error occurred while logging out.'], 500);
-        }
+
     }
 
 

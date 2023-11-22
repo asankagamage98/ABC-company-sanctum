@@ -12,12 +12,12 @@ use App\http\Controllers\AuthController;
 */
 
 
-//public routes  
+//public routes
 
 //new public routes
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
-
+Route::get('/getall',[AuthController::class,'getUserAll']);
 
 //protected routes
 Route::group(['middleware' => ['auth:sanctum']],function(){
